@@ -5,7 +5,9 @@
 //!
 //! In this case, we're transitioning from a `Menu` state to an `InGame` state.
 
+use bevy::app::ScheduleRunnerPlugin;
 use bevy::prelude::*;
+use bevy::input::InputPlugin;
 //use bevy_dev_tools::states::*;
 
 // Copied from bevy_dev_tools::states
@@ -22,8 +24,19 @@ pub fn log_transitions<S: States>(mut transitions: EventReader<StateTransitionEv
 pub fn create_app() -> App {
     let mut app = App::new();
 
+    // Only add this plugin in testing.
+    // The main app will assume it to be absent
+    if cfg!(test) {
+        app.add_plugins(MinimalPlugins);
+        //app.add_plugins(InputPlugin);
+        //app.add_plugins(ScheduleRunnerPlugin::default());
+        app.add_plugins(bevy::state::app::StatesPlugin);
+    } else {
+        app.add_plugins(DefaultPlugins);
+    }
+
     app
-        .add_plugins(DefaultPlugins)
+        //.add_plugins(DefaultPlugins)
         .init_state::<AppState>() // Alternatively we could use .insert_state(AppState::Menu)
         .add_systems(Startup, setup)
 
@@ -112,15 +125,12 @@ mod tests {
         assert_eq!(count_n_texts(&mut app), 0);
     }
 
-
-    /*
     #[test]
     fn test_app_has_text() {
         let mut app = create_app();
         app.update();
-        assert_eq!(count_n_texts(&mut app), 0);
+        assert_eq!(count_n_texts(&mut app), 1);
     }
-    */
 
 
 }
