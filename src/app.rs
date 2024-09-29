@@ -8,6 +8,7 @@
 use bevy::prelude::*;
 //use bevy_dev_tools::states::*;
 
+// Copied from bevy_dev_tools::states
 pub fn log_transitions<S: States>(mut transitions: EventReader<StateTransitionEvent<S>>) {
     // State internals can generate at most one event (of type) per frame.
     let Some(transition) = transitions.read().last() else {
@@ -28,19 +29,65 @@ pub fn create_app() -> App {
         // This system runs when we enter `AppState::Menu`, during the `StateTransition` schedule.
         // All systems from the exit schedule of the state we're leaving are run first,
         // and then all systems from the enter schedule of the state we're entering are run second.
-        .add_systems(OnEnter(AppState::Menu), setup_menu)
+
+
+        //.add_systems(OnEnter(AppState::Menu), setup_menu)
+        .add_systems(OnEnter(AppState::Menu), add_menu_text)
+        .add_systems(OnEnter(AppState::InGame), add_game_text)
+
         // By contrast, update systems are stored in the `Update` schedule. They simply
         // check the value of the `State<T>` resource to see if they should run each frame.
-        .add_systems(Update, menu.run_if(in_state(AppState::Menu)))
-        .add_systems(OnExit(AppState::Menu), cleanup_menu)
-        .add_systems(OnEnter(AppState::InGame), setup_game)
-        .add_systems(
-            Update,
-            (movement, change_color).run_if(in_state(AppState::InGame)),
-        )
+        .add_systems(Update, menu_respond_to_keyboard.run_if(in_state(AppState::Menu)))
+        .add_systems(Update, in_game_respond_to_keyboard.run_if(in_state(AppState::InGame)))
+
+        //.add_systems(OnExit(AppState::Menu), cleanup_menu)
+        .add_systems(OnExit(AppState::Menu), despawn_all_text)
+        .add_systems(OnExit(AppState::InGame), despawn_all_text)
+
+        //.add_systems(OnEnter(AppState::InGame), setup_game)
+        //.add_systems(OnEnter(AppState::InGame), add_game_text)
+        //.add_systems(OnEnter(AppState::Menu), add_menu_text)
+        //.add_systems(
+        //    Update,
+        //    (movement, change_color).run_if(in_state(AppState::InGame)),
+        //)
         .add_systems(Update, log_transitions::<AppState>);
 
     app
+}
+
+fn menu_respond_to_keyboard(
+    input: Res<ButtonInput<KeyCode>>,
+    mut next_state: ResMut<NextState<AppState>>,
+
+) {
+    if input.just_pressed(KeyCode::Space) {
+        next_state.set(AppState::InGame);
+    }
+}
+
+fn in_game_respond_to_keyboard(
+    input: Res<ButtonInput<KeyCode>>,
+    mut next_state: ResMut<NextState<AppState>>,
+
+) {
+    if input.just_pressed(KeyCode::Escape) {
+        next_state.set(AppState::Menu);
+    }
+}
+
+fn add_game_text(mut commands: Commands) {
+    commands.spawn(Text2dBundle {
+        text: Text::from_section(String::from("Game"), TextStyle { ..default() }),
+        ..default()
+    });
+}
+
+fn add_menu_text(mut commands: Commands) {
+    commands.spawn(Text2dBundle {
+        text: Text::from_section(String::from("Menu"), TextStyle { ..default() }),
+        ..default()
+    });
 }
 
 #[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Hash, States)]
@@ -58,6 +105,12 @@ struct MenuData {
 const NORMAL_BUTTON: Color = Color::srgb(0.15, 0.15, 0.15);
 const HOVERED_BUTTON: Color = Color::srgb(0.25, 0.25, 0.25);
 const PRESSED_BUTTON: Color = Color::srgb(0.35, 0.75, 0.35);
+
+#[cfg(test)]
+fn count_n_texts(app: &mut App) -> usize {
+    let mut query = app.world_mut().query::<&Text>();
+    return query.iter(app.world()).len();
+}
 
 fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
@@ -133,6 +186,15 @@ fn cleanup_menu(mut commands: Commands, menu_data: Res<MenuData>) {
     commands.entity(menu_data.button_entity).despawn_recursive();
 }
 
+fn despawn_all_text(
+    mut commands: Commands,
+    query: Query<Entity, With<Text>>,
+) {
+    for entity in query.iter() {
+        commands.entity(entity).despawn();
+    }
+}
+
 fn setup_game(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(SpriteBundle {
         texture: asset_server.load("branding/icon.png"),
@@ -178,6 +240,18 @@ fn change_color(time: Res<Time>, mut query: Query<&mut Sprite>) {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty_app_has_text() {
+        let mut app = App::new();
+        app.update();
+        assert_eq!(count_n_texts(&mut app), 0);
+    }
+
+}
 /*
 
 use bevy::prelude::*;
