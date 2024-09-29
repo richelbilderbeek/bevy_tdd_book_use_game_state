@@ -8,7 +8,16 @@
 [![Measure code coverage](https://github.com/richelbilderbeek/bevy_tdd_book_use_game_state/actions/workflows/measure_codecov.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_use_game_state/actions/workflows/measure_codecov.yaml)
 [![codecov](https://codecov.io/gh/richelbilderbeek/bevy_tdd_book_use_game_state/graph/badge.svg?token=XAVFZYDQKZ)](https://codecov.io/gh/richelbilderbeek/bevy_tdd_book_use_game_state)
 
-Chapter of [https://github.com/richelbilderbeek/bevy_tdd_book](https://github.com/richelbilderbeek/bevy_tdd_book)
+Chapter of [https://github.com/richelbilderbeek/bevy_tdd_book](https://github.com/richelbilderbeek/bevy_tdd_book).
+
+The goal of this chapter is to use a Bevy State:
+
+- [Bevy_state documentation](https://github.com/bevyengine/bevy/tree/main/crates/bevy_state)
+- [Bevy example](https://github.com/bevyengine/bevy/blob/main/examples/state/states.rs)
+- [Unofficial Bevy Cheat Book](https://bevy-cheatbook.github.io/programming/states.html)
+
+I cannot get this to work. Please contact me if you can create a minimal
+tested example for this feature of Bevy.
 
 ![Screenshot of this application](add_text.png)
 
