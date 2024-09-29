@@ -6,7 +6,17 @@
 //! In this case, we're transitioning from a `Menu` state to an `InGame` state.
 
 use bevy::prelude::*;
-use bevy_dev_tools::states::*;
+//use bevy_dev_tools::states::*;
+
+pub fn log_transitions<S: States>(mut transitions: EventReader<StateTransitionEvent<S>>) {
+    // State internals can generate at most one event (of type) per frame.
+    let Some(transition) = transitions.read().last() else {
+        return;
+    };
+    let name = std::any::type_name::<S>();
+    let StateTransitionEvent { exited, entered } = transition;
+    info!("{} transition: {:?} => {:?}", name, exited, entered);
+}
 
 pub fn create_app() -> App {
     let mut app = App::new();
