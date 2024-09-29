@@ -5,7 +5,8 @@
 //!
 //! In this case, we're transitioning from a `Menu` state to an `InGame` state.
 
-use bevy::{dev_tools::states::*, prelude::*};
+use bevy::prelude::*;
+use bevy_dev_tools::states::*;
 
 pub fn create_app() -> App {
     let mut app = App::new();
@@ -159,7 +160,7 @@ fn movement(
 fn change_color(time: Res<Time>, mut query: Query<&mut Sprite>) {
     for mut sprite in &mut query {
         let new_color = LinearRgba {
-            blue: ops::sin(time.elapsed_seconds() * 0.5) + 2.0,
+            blue: f32::sin(time.elapsed_seconds() * 0.5) + 2.0,
             ..LinearRgba::from(sprite.color)
         };
 
