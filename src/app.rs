@@ -8,7 +8,8 @@
 
 use bevy::prelude::*;
 
-//use bevy_dev_tools::states::*;
+#[cfg(test)]
+use bevy::input::InputPlugin;
 
 // Copied from bevy_dev_tools::states
 pub fn log_transitions<S: States>(mut transitions: EventReader<StateTransitionEvent<S>>) {
@@ -28,7 +29,7 @@ pub fn create_app() -> App {
     // The main app will assume it to be absent
     if cfg!(test) {
         app.add_plugins(MinimalPlugins);
-        //app.add_plugins(InputPlugin);
+        app.add_plugins(InputPlugin);
         //app.add_plugins(ScheduleRunnerPlugin::default());
         app.add_plugins(bevy::state::app::StatesPlugin);
     } else {
