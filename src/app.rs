@@ -8,7 +8,6 @@
 
 use bevy::prelude::*;
 
-#[cfg(test)]
 use bevy::input::InputPlugin;
 
 // Copied from bevy_dev_tools::states
