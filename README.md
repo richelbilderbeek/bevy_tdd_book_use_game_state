@@ -16,10 +16,7 @@ The goal of this chapter is to use a Bevy State:
 - [Bevy example](https://github.com/bevyengine/bevy/blob/main/examples/state/states.rs)
 - [Unofficial Bevy Cheat Book](https://bevy-cheatbook.github.io/programming/states.html)
 
-I cannot get this to work. Please contact me if you can create a minimal
-tested example for this feature of Bevy.
-
-![Screenshot of this application](add_text.png)
+![Screenshot of this application](use_game_state.png)
 
 ## Setup
 
