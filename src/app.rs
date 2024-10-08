@@ -124,7 +124,7 @@ fn get_text(app: &mut App) -> String {
 
 #[cfg(test)]
 fn get_program_state(app: &mut App) -> AppState {
-    return app.world_mut().resource_mut::<State<AppState>>().get().clone()
+    return *app.world_mut().resource_mut::<State<AppState>>().get()
     /*
     *world. resource_mut::<State<GameState>>()
     app.
