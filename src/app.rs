@@ -146,30 +146,16 @@ mod tests {
         assert_eq!(get_text(&mut app), "Menu. Press space to start");
     }
 
-
-}
-/*
-
-    #[test]
-    fn test_app_has_text() {
-        let mut app = create_app();
-        app.update();
-        assert_eq!(count_n_texts(&mut app), 1);
-    }
-
-    #[test]
-    fn test_app_uses_text() {
-        let mut app = create_app();
-        app.update();
-        assert!(get_text(&mut app).len() > 0);
-    }
-
     #[test]
     fn test_app_starts_at_menu() {
         let mut app = create_app();
         app.update();
         assert_eq!(get_program_state(&mut app), ProgramState::MainMenu);
     }
+
+
+}
+/*
     #[test]
     fn test_app_starts_game() {
         let mut app = create_app();
