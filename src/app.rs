@@ -121,6 +121,24 @@ fn get_text(app: &mut App) -> String {
     let mut query = app.world_mut().query::<&Text>();
     return query.single(app.world_mut()).sections[0].value.clone();
 }
+
+#[cfg(test)]
+fn get_program_state(app: &mut App) -> AppState {
+    return app.world_mut().resource_mut::<State<AppState>>().get().clone()
+    /*
+    *world. resource_mut::<State<GameState>>()
+    app.
+    let mut query = app.world_mut().query::<&Text>();
+    return query.single(app.world_mut()).sections[0].value.clone();
+
+    game_state: Res<State<GameState>>) {
+        match game_state. get() {
+            GameState::InGame => {
+                // Run game logic here...
+            },
+            _ => {},
+  */
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -150,19 +168,14 @@ mod tests {
     fn test_app_starts_at_menu() {
         let mut app = create_app();
         app.update();
-        assert_eq!(get_program_state(&mut app), ProgramState::MainMenu);
+        assert_eq!(get_program_state(&mut app), AppState::Menu);
     }
 
-
-}
-/*
     #[test]
-    fn test_app_starts_game() {
+    fn test_space_starts_game() {
         let mut app = create_app();
         app.update();
-        assert_eq!(get_program_state(&mut app), ProgramState::MainMenu);
-
-        // Press the space button, thanks kristoff3r
+        assert_eq!(get_program_state(&mut app), AppState::Menu);
         app.world_mut()
             .send_event(bevy::input::keyboard::KeyboardInput {
                 key_code: KeyCode::Space,
@@ -170,12 +183,36 @@ mod tests {
                 state: bevy::input::ButtonState::Pressed,
                 window: Entity::PLACEHOLDER,
             });
-
         app.update();
-
-        assert_eq!(get_program_state(&mut app), ProgramState::InGame);
-        assert_eq!(1, 2);
-
+        app.update();
+        assert_eq!(get_program_state(&mut app), AppState::InGame);
     }
+
+    #[test]
+    fn test_escape_leaves_game() {
+        let mut app = create_app();
+        app.update();
+        assert_eq!(get_program_state(&mut app), AppState::Menu);
+        app.world_mut()
+            .send_event(bevy::input::keyboard::KeyboardInput {
+                key_code: KeyCode::Space,
+                logical_key: bevy::input::keyboard::Key::Space,
+                state: bevy::input::ButtonState::Pressed,
+                window: Entity::PLACEHOLDER,
+            });
+        app.update();
+        app.update();
+        assert_eq!(get_program_state(&mut app), AppState::InGame);
+        app.world_mut()
+            .send_event(bevy::input::keyboard::KeyboardInput {
+                key_code: KeyCode::Escape,
+                logical_key: bevy::input::keyboard::Key::Escape,
+                state: bevy::input::ButtonState::Pressed,
+                window: Entity::PLACEHOLDER,
+            });
+        app.update();
+        app.update();
+        assert_eq!(get_program_state(&mut app), AppState::Menu);
+    }
+
 }
-*/
