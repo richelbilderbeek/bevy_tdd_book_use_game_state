@@ -35,16 +35,12 @@ pub fn create_app() -> App {
     app
         .init_state::<AppState>()
         .add_systems(Startup, setup)
-
         .add_systems(OnEnter(AppState::Menu), add_menu_text)
         .add_systems(OnEnter(AppState::InGame), add_game_text)
-
         .add_systems(Update, menu_respond_to_keyboard.run_if(in_state(AppState::Menu)))
         .add_systems(Update, in_game_respond_to_keyboard.run_if(in_state(AppState::InGame)))
-
         .add_systems(OnExit(AppState::Menu), despawn_all_text)
         .add_systems(OnExit(AppState::InGame), despawn_all_text)
-
         .add_systems(Update, log_transitions::<AppState>);
 
     app

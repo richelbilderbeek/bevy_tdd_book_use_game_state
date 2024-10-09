@@ -1,4 +1,3 @@
-use bevy::DefaultPlugins;
 use crate::app::*;
 mod app;
 
