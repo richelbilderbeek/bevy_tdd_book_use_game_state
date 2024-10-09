@@ -24,20 +24,16 @@ pub fn log_transitions<S: States>(mut transitions: EventReader<StateTransitionEv
 pub fn create_app() -> App {
     let mut app = App::new();
 
-    // Only add this plugin in testing.
-    // The main app will assume it to be absent
     if cfg!(test) {
         app.add_plugins(MinimalPlugins);
         app.add_plugins(InputPlugin);
-        //app.add_plugins(ScheduleRunnerPlugin::default());
         app.add_plugins(bevy::state::app::StatesPlugin);
     } else {
         app.add_plugins(DefaultPlugins);
     }
 
     app
-        //.add_plugins(DefaultPlugins)
-        .init_state::<AppState>() // Alternatively we could use .insert_state(AppState::Menu)
+        .init_state::<AppState>()
         .add_systems(Startup, setup)
 
         .add_systems(OnEnter(AppState::Menu), add_menu_text)
