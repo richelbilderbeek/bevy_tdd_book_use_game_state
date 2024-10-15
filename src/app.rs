@@ -24,6 +24,10 @@ pub fn log_transitions<S: States>(mut transitions: EventReader<StateTransitionEv
 pub fn create_app() -> App {
     let mut app = App::new();
 
+    // The function 'try_add_plugins' 
+    // (https://github.com/bevyengine/bevy/discussions/15802#discussioncomment-10898148)
+    // will make this if obsolete and increase code coverage.
+    // Thanks mgi388 for pointing this out
     if cfg!(test) {
         app.add_plugins(MinimalPlugins);
         app.add_plugins(InputPlugin);
