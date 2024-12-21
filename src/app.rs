@@ -93,7 +93,7 @@ enum AppState {
 
 #[cfg(test)]
 fn count_n_texts(app: &mut App) -> usize {
-    let mut query = app.world_mut().query::<&Text>();
+    let mut query = app.world_mut().query::<&Text2d>();
     return query.iter(app.world()).len();
 }
 
@@ -103,7 +103,7 @@ fn setup(mut commands: Commands) {
 
 fn despawn_all_text(
     mut commands: Commands,
-    query: Query<Entity, With<Text>>,
+    query: Query<Entity, With<Text2d>>,
 ) {
     for entity in query.iter() {
         commands.entity(entity).despawn();
@@ -114,7 +114,7 @@ fn despawn_all_text(
 #[cfg(test)]
 fn get_text(app: &mut App) -> String {
     assert_eq!(count_n_texts(app), 1);
-    let mut query = app.world_mut().query::<&Text>();
+    let mut query = app.world_mut().query::<&Text2d>();
     return query.single(app.world_mut()).sections[0].value.clone();
 }
 
@@ -124,7 +124,7 @@ fn get_program_state(app: &mut App) -> AppState {
     /*
     *world. resource_mut::<State<GameState>>()
     app.
-    let mut query = app.world_mut().query::<&Text>();
+    let mut query = app.world_mut().query::<&Text2d>();
     return query.single(app.world_mut()).sections[0].value.clone();
 
     game_state: Res<State<GameState>>) {
