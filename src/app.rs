@@ -71,17 +71,11 @@ fn in_game_respond_to_keyboard(
 }
 
 fn add_game_text(mut commands: Commands) {
-    commands.spawn(Text2d {
-        text: Text::from_section(String::from("Game. Press escape to quit"), TextStyle { ..default() }),
-        ..default()
-    });
+    commands.spawn(Text2d::new("Game. Press escape to quit"));
 }
 
 fn add_menu_text(mut commands: Commands) {
-    commands.spawn(Text2d {
-        text: Text::from_section(String::from("Menu. Press space to start"), TextStyle { ..default() }),
-        ..default()
-    });
+    commands.spawn(Text2d::new("Menu. Press space to start"));
 }
 
 #[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Hash, States)]
@@ -115,7 +109,7 @@ fn despawn_all_text(
 fn get_text(app: &mut App) -> String {
     assert_eq!(count_n_texts(app), 1);
     let mut query = app.world_mut().query::<&Text2d>();
-    return query.single(app.world_mut()).sections[0].value.clone();
+    return query.single(app.world_mut()).0.clone();
 }
 
 #[cfg(test)]
@@ -178,6 +172,7 @@ mod tests {
                 logical_key: bevy::input::keyboard::Key::Space,
                 state: bevy::input::ButtonState::Pressed,
                 window: Entity::PLACEHOLDER,
+                repeat: false,
             });
         app.update();
         app.update();
@@ -195,6 +190,7 @@ mod tests {
                 logical_key: bevy::input::keyboard::Key::Space,
                 state: bevy::input::ButtonState::Pressed,
                 window: Entity::PLACEHOLDER,
+                repeat: false,
             });
         app.update();
         app.update();
@@ -205,6 +201,7 @@ mod tests {
                 logical_key: bevy::input::keyboard::Key::Escape,
                 state: bevy::input::ButtonState::Pressed,
                 window: Entity::PLACEHOLDER,
+                repeat: false,
             });
         app.update();
         app.update();
