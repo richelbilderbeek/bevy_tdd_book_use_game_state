@@ -71,14 +71,14 @@ fn in_game_respond_to_keyboard(
 }
 
 fn add_game_text(mut commands: Commands) {
-    commands.spawn(Text2dBundle {
+    commands.spawn(Text2d {
         text: Text::from_section(String::from("Game. Press escape to quit"), TextStyle { ..default() }),
         ..default()
     });
 }
 
 fn add_menu_text(mut commands: Commands) {
-    commands.spawn(Text2dBundle {
+    commands.spawn(Text2d {
         text: Text::from_section(String::from("Menu. Press space to start"), TextStyle { ..default() }),
         ..default()
     });
