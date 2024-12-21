@@ -88,11 +88,11 @@ enum AppState {
 #[cfg(test)]
 fn count_n_texts(app: &mut App) -> usize {
     let mut query = app.world_mut().query::<&Text2d>();
-    return query.iter(app.world()).len();
+    query.iter(app.world()).len()
 }
 
 fn setup(mut commands: Commands) {
-    commands.spawn(Camera2d::default());
+    commands.spawn(Camera2d);
 }
 
 fn despawn_all_text(
@@ -109,12 +109,12 @@ fn despawn_all_text(
 fn get_text(app: &mut App) -> String {
     assert_eq!(count_n_texts(app), 1);
     let mut query = app.world_mut().query::<&Text2d>();
-    return query.single(app.world_mut()).0.clone();
+    query.single(app.world_mut()).0.clone()
 }
 
 #[cfg(test)]
 fn get_program_state(app: &mut App) -> AppState {
-    return *app.world_mut().resource_mut::<State<AppState>>().get()
+    *app.world_mut().resource_mut::<State<AppState>>().get()
     /*
     *world. resource_mut::<State<GameState>>()
     app.
