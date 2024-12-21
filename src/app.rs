@@ -98,7 +98,7 @@ fn count_n_texts(app: &mut App) -> usize {
 }
 
 fn setup(mut commands: Commands) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn(Camera2d::default());
 }
 
 fn despawn_all_text(
